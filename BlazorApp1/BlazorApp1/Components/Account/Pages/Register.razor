@@ -97,8 +97,7 @@
         if (UserManager.Options.SignIn.RequireConfirmedAccount)
         {
             NavigationManager.NavigateTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+                $"Account/RegisterConfirmation?email{Input.Email}&returnUrl={ReturnUrl}");
         }
 
         await SignInManager.SignInAsync(user, isPersistent: false);
