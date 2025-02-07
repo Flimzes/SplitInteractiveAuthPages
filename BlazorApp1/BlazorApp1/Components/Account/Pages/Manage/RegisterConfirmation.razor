@@ -33,9 +33,6 @@ else
     private string? emailConfirmationLink;
     private string? statusMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
-
     [SupplyParameterFromQuery]
     private string? Email { get; set; }
 
@@ -52,7 +49,6 @@ else
         var user = await UserManager.FindByEmailAsync(Email);
         if (user is null)
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
             statusMessage = "Error finding user for unspecified email";
         }
         else if (EmailSender is IdentityNoOpEmailSender)

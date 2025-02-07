@@ -1040,10 +1040,10 @@
 /Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/refint/BlazorApp1.Client.dll
 /Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/BlazorApp1.Client.pdb
 /Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/ref/BlazorApp1.Client.dll
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.jycw60obpj.pdb
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.vejukeykcy.wasm
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.jycw60obpj.pdb.gz
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.vejukeykcy.wasm.gz
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/ze2qwtpi57-vejukeykcy.gz
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/rud6kqy1tt-jycw60obpj.gz
-/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/o99o0iv4dq-49f2951sac.gz
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.1583h6iq51.pdb
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.mrwux7upuy.wasm
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.1583h6iq51.pdb.gz
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.mrwux7upuy.wasm.gz
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/ze2qwtpi57-mrwux7upuy.gz
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/rud6kqy1tt-1583h6iq51.gz
+/Users/mco/Source/repos/TestBlazor/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/o99o0iv4dq-fzpozamvm3.gz

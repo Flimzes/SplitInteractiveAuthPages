@@ -14,7 +14,12 @@
 </head>
 
 <body>
-    <Routes @rendermode="PageRenderMode" />
+    @if(IsAccountPage) {
+        <ServerRoutes @rendermode="PageRenderMode" />
+    }
+    else {
+        <Routes @rendermode="PageRenderMode" />
+    }
     <script src="_framework/blazor.web.js"></script>
 </body>
 
@@ -23,7 +28,22 @@
 @code {
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
+    private bool IsAccountPage => HttpContext.Request.Path.StartsWithSegments("/Account");
 
     private IComponentRenderMode? PageRenderMode =>
-        HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null;
+        HttpContext.AcceptsInteractiveRouting() ? RenderModeForPage : null;
+    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
+        ? IsStaticPage ? null : InteractiveServer : InteractiveAuto;
+    private bool IsStaticPage { get {
+            if(HttpContext.Request.Path.StartsWithSegments("/Account/LoginWith2fa"))
+                return true;
+            if(HttpContext.Request.Path.StartsWithSegments("/Account/ExternalLogin"))
+                return true;
+            if(HttpContext.Request.Path.StartsWithSegments("/Account/Login"))
+                return true;
+            if(HttpContext.Request.Path.StartsWithSegments("/Account/LoginWithRecoveryCode"))
+                return true;
+            return false;
+        }
+    }
 }

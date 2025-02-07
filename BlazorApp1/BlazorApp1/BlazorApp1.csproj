@@ -20,4 +20,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components/Account/Pages/DynamicRender/Manage/" />
+  </ItemGroup>
+
 </Project>

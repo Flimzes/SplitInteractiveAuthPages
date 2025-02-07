@@ -6,20 +6,22 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using BlazorApp1.Components.Account.Pages;
 using BlazorApp1.Data;
 using BlazorApp1.Components.Account.Pages.StaticRender;
+using BlazorApp1.Components.Account.Pages.Manage;
 
 namespace Microsoft.AspNetCore.Routing;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {
     // These endpoints are required by the Identity Razor components defined in the /Components/Account/Pages directory of this project.
-    public static IEndpointRouteBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints)
+    public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
 
-        endpoints.MapPost("/Account/PerformExternalLogin", (
+        var accountGroup = endpoints.MapGroup("/Account");
+
+        accountGroup.MapPost("/PerformExternalLogin", (
             HttpContext context,
             [FromServices] SignInManager<ApplicationUser> signInManager,
             [FromForm] string provider,
@@ -38,7 +40,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
             return TypedResults.Challenge(properties, [provider]);
         });
 
-        endpoints.MapPost("/Account/Logout", async (
+        accountGroup.MapPost("/Logout", async (
             ClaimsPrincipal user,
             [FromServices] SignInManager<ApplicationUser> signInManager,
             [FromForm] string returnUrl) =>
@@ -46,7 +48,10 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
             await signInManager.SignOutAsync();
             return TypedResults.LocalRedirect($"~/{returnUrl}");
         });
-        endpoints.MapPost("/Account/LinkExternalLogin", async (
+
+        var manageGroup = accountGroup.MapGroup("/Manage");
+
+        manageGroup.MapPost("/LinkExternalLogin", async (
             HttpContext context,
             [FromServices] SignInManager<ApplicationUser> signInManager,
             [FromForm] string provider) =>
@@ -63,6 +68,45 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
             return TypedResults.Challenge(properties, [provider]);
         });
 
-        return endpoints;
+        var loggerFactory = endpoints.ServiceProvider.GetRequiredService<ILoggerFactory>();
+        var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");
+
+        manageGroup.MapPost("/DownloadPersonalData", async (
+            HttpContext context,
+            [FromServices] UserManager<ApplicationUser> userManager,
+            [FromServices] AuthenticationStateProvider authenticationStateProvider) =>
+        {
+            var user = await userManager.GetUserAsync(context.User);
+            if (user is null)
+            {
+                return Results.NotFound($"Unable to load user with ID '{userManager.GetUserId(context.User)}'.");
+            }
+
+            var userId = await userManager.GetUserIdAsync(user);
+            downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
+
+            // Only include personal data for download
+            var personalData = new Dictionary<string, string>();
+            var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+                prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+            foreach (var p in personalDataProps)
+            {
+                personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
+            }
+
+            var logins = await userManager.GetLoginsAsync(user);
+            foreach (var l in logins)
+            {
+                personalData.Add($"{l.LoginProvider} external login provider key", l.ProviderKey);
+            }
+
+            personalData.Add("Authenticator Key", (await userManager.GetAuthenticatorKeyAsync(user))!);
+            var fileBytes = JsonSerializer.SerializeToUtf8Bytes(personalData);
+
+            context.Response.Headers.TryAdd("Content-Disposition", "attachment; filename=PersonalData.json");
+            return TypedResults.File(fileBytes, contentType: "application/json", fileDownloadName: "PersonalData.json");
+        });
+
+        return accountGroup;
     }
 }
